@@ -103,8 +103,8 @@ def main():
                           ,'POP_HIGH_PROB':'고등학생비율','POP_60P_PROB':'60세이상비율','POP_DENS':'인구밀도','GMS_LIC_CNT':'집단급식소수'})
 
     # 독립변수 Prophet 모델 예측 데이터 로드 및 캐시 저장
-    data_cause_forecast = loading_data('https://github.com/Jeon-doun/food_poissoning_dashboard/raw/refs/heads/main/cause_prediction_12months.csv')
-    data_region_forecast = loading_data('https://github.com/Jeon-doun/food_poissoning_dashboard/raw/refs/heads/main/region_prediction_12months.csv')
+    data_cause_forecast = loading_data('https://github.com/Kangsungmin00/foodpoision_project/blob/main/data/cause_prediction_12months.csv')
+    data_region_forecast = loading_data('https://github.com/Kangsungmin00/foodpoision_project/blob/main/data/region_prediction_12months.csv')
 
     # model = loading_model('https://github.com/Jeon-doun/food_poissoning_dashboard/raw/refs/heads/main/test_clf_model.pkl')
     # model = model.best_estimator_
