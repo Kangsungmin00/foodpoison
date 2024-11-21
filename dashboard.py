@@ -1071,7 +1071,7 @@ def main():
     </style>
     <div class="simple-label">기온</div>
 """, unsafe_allow_html=True)
-            option_value['기온'] = st.number_input(f'(기준월 평균기온 : {test_X_region['평균기온'].mean():.1f}˚C)', value = test_X_region['평균기온'].mean(), step = 0.1, format = '%.1f')
+            option_value['기온'] = st.number_input(f"(기준월 평균기온 : {test_X_region['평균기온'].mean():.1f}˚C)", value = test_X_region['평균기온'].mean(), step = 0.1, format = '%.1f')
             st.markdown("""
     <style>
     .simple-label {
@@ -1083,7 +1083,7 @@ def main():
     </style>
     <div class="simple-label">강수량</div>
 """, unsafe_allow_html=True)
-            option_value['강수량'] = st.number_input(f'(기준월 평균강수량 : {test_X_region['평균강수량'].mean():.1f}mm)', min_value=0.0, value = test_X_region['평균강수량'].mean(), step = 0.1, format = '%.1f')
+            option_value['강수량'] = st.number_input(f"(기준월 평균강수량 : {test_X_region['평균강수량'].mean():.1f}mm)", min_value=0.0, value = test_X_region['평균강수량'].mean(), step = 0.1, format = '%.1f')
             st.markdown("""
     <style>
     .simple-label {
@@ -1095,7 +1095,7 @@ def main():
     </style>
     <div class="simple-label">습도</div>
 """, unsafe_allow_html=True)
-            option_value['습도'] = st.number_input(f'(기준월 평균습도 {test_X_region['평균상대습도'].mean():.1f}%)', min_value=0.0, max_value=100.0, value = test_X_region['평균상대습도'].mean(), step = 0.1, format = '%.1f')
+            option_value['습도'] = st.number_input(f"(기준월 평균습도 {test_X_region['평균상대습도'].mean():.1f}%)", min_value=0.0, max_value=100.0, value = test_X_region['평균상대습도'].mean(), step = 0.1, format = '%.1f')
             st.write('--'*3)
             st.markdown("""
     <style>
@@ -1124,7 +1124,7 @@ def main():
     </style>
     <div class="simple-label">초등학생 비율</div>
 """, unsafe_allow_html=True)
-            option_value['초등학생비율'] = st.number_input(f'(기준월 평균비율 : {test_X_region['초등학생비율'].mean():.1%})', min_value=0.0, value = test_X_region['초등학생비율'].mean()*100, step = 0.1, format = '%.1f')
+            option_value['초등학생비율'] = st.number_input(f"(기준월 평균비율 : {test_X_region['초등학생비율'].mean():.1%})", min_value=0.0, value = test_X_region['초등학생비율'].mean()*100, step = 0.1, format = '%.1f')
             st.markdown("""
     <style>
     .simple-label {
@@ -1136,7 +1136,7 @@ def main():
     </style>
     <div class="simple-label">중학생 비율</div>
 """, unsafe_allow_html=True)
-            option_value['중학생비율'] = st.number_input(f'(기준월 평균비율 : {test_X_region['중학생비율'].mean():.1%})', min_value=0.0, value = test_X_region['중학생비율'].mean()*100, step = 0.1, format = '%.1f')
+            option_value['중학생비율'] = st.number_input(f"(기준월 평균비율 : {test_X_region['중학생비율'].mean():.1%})", min_value=0.0, value = test_X_region['중학생비율'].mean()*100, step = 0.1, format = '%.1f')
             st.markdown("""
     <style>
     .simple-label {
@@ -1148,7 +1148,7 @@ def main():
     </style>
     <div class="simple-label">고등학생 비율</div>
 """, unsafe_allow_html=True)
-            option_value['고등학생비율'] = st.number_input(f'(기준월 평균비율 : {test_X_region['고등학생비율'].mean():.1%})', min_value=0.0, value = test_X_region['고등학생비율'].mean()*100, step = 0.1, format = '%.1f')
+            option_value['고등학생비율'] = st.number_input(f"(기준월 평균비율 : {test_X_region['고등학생비율'].mean():.1%})", min_value=0.0, value = test_X_region['고등학생비율'].mean()*100, step = 0.1, format = '%.1f')
             st.markdown("""
     <style>
     .simple-label {
@@ -1160,9 +1160,9 @@ def main():
     </style>
     <div class="simple-label">60세 이상 비율</div>
 """, unsafe_allow_html=True)
-            option_value['60세이상비율'] = st.number_input(f'(기준월 평균비율 : {test_X_region['60세이상비율'].mean():.1%})', min_value=0.0, value = test_X_region['60세이상비율'].mean()*100, step = 0.1, format = '%.1f')
+            option_value['60세이상비율'] = st.number_input(f"(기준월 평균비율 : {test_X_region['60세이상비율'].mean():.1%})", min_value=0.0, value = test_X_region['60세이상비율'].mean()*100, step = 0.1, format = '%.1f')
             
-            st.write(f'(자료 기준월 : {data.index.max().strftime('%Y년 %m월')})')
+            st.write(f"(자료 기준월 : {data.index.max().strftime('%Y년 %m월')})")
 
         test_X_2 = test_X_region.copy()
 
