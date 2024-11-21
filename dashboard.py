@@ -32,7 +32,7 @@ def loading_data(path):
 
 @st.cache_data
 def loading_json_file():
-    state_geo = 'https://github.com/Jeon-doun/food_poissoning_dashboard/raw/refs/heads/main/TL_SCCO_CTPRVN_%EB%8F%85%EB%8F%84%ED%91%9C%EA%B8%B0.json'
+    state_geo = 'https://github.com/Kangsungmin00/foodpoision_project/blob/main/data/TL_SCCO_CTPRVN_%EB%8F%85%EB%8F%84%ED%91%9C%EA%B8%B0.json'
     response = requests.get(state_geo)
     response.raise_for_status() # 요청에 실패하면 오류 발생
     jsonResult = response.json()
@@ -77,13 +77,13 @@ def predict_reason(model, X):
 def main():
 
     # 지역별 데이터 로드 및 캐시 저장
-    data = loading_data('https://github.com/Jeon-doun/food_poissoning_dashboard/raw/refs/heads/main/Foodborne_Region_MasterTable.csv')
+    data = loading_data('https://github.com/Kangsungmin00/foodpoision_project/blob/main/data/Foodborne_Region_MasterTable.csv')
     data.index = pd.to_datetime(data['OCCRNC_YEAR'].astype(str) + '-' + data['OCCRNC_MM'].astype(str))
     data = data.sort_index()
     test_X_region = data.loc[data.index == data.index.max()]
 
     # 원인물질별 데이터 로드 및 캐시 저장
-    data_cause = loading_data('https://github.com/Jeon-doun/food_poissoning_dashboard/raw/refs/heads/main/Foodborne_Cause_MasterTable.csv')
+    data_cause = loading_data('https://github.com/Kangsungmin00/foodpoision_project/blob/main/data/Foodborne_Cause_MasterTable4.csv')
     data_cause.index = pd.to_datetime(data_cause['OCCRNC_YEAR'].astype(str) + '-' + data_cause['OCCRNC_MM'].astype(str))
     data_cause_2 = data_cause.drop(columns = ['OCCRNC_YEAR', 'OCCRNC_MM', 'PATNT_CNT', 'OCCRNC_IND']).sort_index().rename(columns = {'HOL_DUR':'황금연휴기간','HOL_IND':'황금연휴여부','CPI_VALUE':'소비자물가지수','WTHR_AVG_TEMP':'평균기온'
                           ,'WTHR_AVG_H_TEMP':'평균최고기온','WTHR_AVG_L_TEMP':'평균최저기온','WTHR_AVG_PRECIP':'평균강수량'
