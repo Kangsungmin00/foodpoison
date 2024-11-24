@@ -32,7 +32,7 @@ def loading_data(path):
 
 @st.cache_data
 def loading_json_file():
-    state_geo = 'https://raw.githubusercontent.com/Kangsungmin00/foodpoison/main/data/TL_SCCO_CTPRVN_%EB%8F%85%EB%8F%84%ED%91%9C%EA%B8%B0.json'
+    state_geo = 'https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/TL_SCCO_CTPRVN_%EB%8F%85%EB%8F%84%ED%91%9C%EA%B8%B0.json'
     response = requests.get(state_geo)
     response.raise_for_status() # 요청에 실패하면 오류 발생
     jsonResult = response.json()
@@ -77,13 +77,13 @@ def predict_reason(model, X):
 def main():
 
     # 지역별 데이터 로드 및 캐시 저장
-    data = loading_data('https://raw.githubusercontent.com/Kangsungmin00/foodpoison/main/data/Foodborne_Region_MasterTable.csv')
+    data = loading_data('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/Foodborne_Region_MasterTable.csv')
     data.index = pd.to_datetime(data['OCCRNC_YEAR'].astype(str) + '-' + data['OCCRNC_MM'].astype(str))
     data = data.sort_index()
     test_X_region = data.loc[data.index == data.index.max()]
 
     # 원인물질별 데이터 로드 및 캐시 저장
-    data_cause = loading_data('https://raw.githubusercontent.com/Kangsungmin00/foodpoison/main/data/Foodborne_Cause_MasterTable.csv')
+    data_cause = loading_data('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/Foodborne_Cause_MasterTable.csv')
     data_cause.index = pd.to_datetime(data_cause['OCCRNC_YEAR'].astype(str) + '-' + data_cause['OCCRNC_MM'].astype(str))
     data_cause_2 = data_cause.drop(columns = ['OCCRNC_YEAR', 'OCCRNC_MM', 'PATNT_CNT', 'OCCRNC_IND']).sort_index().rename(columns = {'HOL_DUR':'황금연휴기간','HOL_IND':'황금연휴여부','CPI_VALUE':'소비자물가지수','WTHR_AVG_TEMP':'평균기온'
                           ,'WTHR_AVG_H_TEMP':'평균최고기온','WTHR_AVG_L_TEMP':'평균최저기온','WTHR_AVG_PRECIP':'평균강수량'
@@ -103,41 +103,43 @@ def main():
                           ,'POP_HIGH_PROB':'고등학생비율','POP_60P_PROB':'60세이상비율','POP_DENS':'인구밀도','GMS_LIC_CNT':'집단급식소수'})
 
     # 독립변수 Prophet 모델 예측 데이터 로드 및 캐시 저장
-    data_cause_forecast = loading_data('https://raw.githubusercontent.com/Kangsungmin00/foodpoison/main/data/cause_prediction_12months.csv')
-    data_region_forecast = loading_data('https://raw.githubusercontent.com/Kangsungmin00/foodpoison/main/data/region_prediction_12months.csv')
+    data_cause_forecast = loading_data('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/cause_prediction_12months.csv')
+    data_region_forecast = loading_data('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/region_prediction_12months.csv')
 
     # model = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoison/main/data/test_clf_model.pkl')
     # model = model.best_estimator_
 
     # 지역별 모델 로드 및 캐시 저장
-    model_강원 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EA%B0%95%EC%9B%90_GradientBoostingClassifier.pkl')
-    model_경기 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EA%B2%BD%EA%B8%B0%20GradientBoostingClassifier.pkl')
-    model_경북 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EA%B2%BD%EB%B6%81%20GradientBoostingClassifier.pkl')
-    model_전남 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%A0%84%EB%82%A8%20GradientBoostingClassifier.pkl')
-    model_경남 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EA%B2%BD%EB%82%A8%20LGBMClassifier.pkl')
-    model_대구 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EB%8C%80%EA%B5%AC%20LGBMClassifier.pkl')
-    model_부산 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EB%B6%80%EC%82%B0%20LGBMClassifier.pkl')
-    model_울산 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%9A%B8%EC%82%B0%20LGBMClassifier.pkl')
-    model_인천 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%9D%B8%EC%B2%9C%20LGBMClassifier.pkl')
-    model_전북 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%A0%84%EB%B6%81%20LGBMClassifier.pkl')
-    model_제주 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%A0%9C%EC%A3%BC%20LGBMClassifier.pkl')
-    model_광주 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EA%B4%91%EC%A3%BC%20LGBMClassifier.pkl')
-    model_대전 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EB%8C%80%EC%A0%84%20XGBClassifier.pkl')
-    model_서울 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%84%9C%EC%9A%B8%20GradientBoostingClassifier.pkl')
-    model_충남 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%B6%A9%EB%82%A8%20GradientBoostingClassifier.pkl')
-    model_세종 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%84%B8%EC%A2%85%20RandomForestClassifier.pkl')
-    model_충북 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%B6%A9%EB%B6%81%20XGBClassifier.pkl')
+    model_강원 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EA%B0%95%EC%9B%90_GradientBoostingClassifier.pkl')
+    model_경기 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EA%B2%BD%EA%B8%B0%20GradientBoostingClassifier.pkl')
+    model_경북 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EA%B2%BD%EB%B6%81%20GradientBoostingClassifier.pkl')
+    model_전남 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%A0%84%EB%82%A8%20GradientBoostingClassifier.pkl')
+    model_경남 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EA%B2%BD%EB%82%A8%20LGBMClassifier.pkl')
+    model_대구 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EB%8C%80%EA%B5%AC%20LGBMClassifier.pkl')
+    model_부산 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EB%B6%80%EC%82%B0%20LGBMClassifier.pkl')
+    model_울산 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%9A%B8%EC%82%B0%20LGBMClassifier.pkl')
+    model_인천 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%9D%B8%EC%B2%9C%20LGBMClassifier.pkl')
+    model_전북 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%A0%84%EB%B6%81%20LGBMClassifier.pkl')
+    model_제주 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%A0%9C%EC%A3%BC%20LGBMClassifier.pkl')
+    model_광주 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EA%B4%91%EC%A3%BC%20LGBMClassifier.pkl')
+    model_대전 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EB%8C%80%EC%A0%84%20XGBClassifier.pkl')
+    model_서울 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%84%9C%EC%9A%B8%20GradientBoostingClassifier.pkl')
+    model_충남 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%B6%A9%EB%82%A8%20GradientBoostingClassifier.pkl')
+    model_세종 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%84%B8%EC%A2%85%20RandomForestClassifier.pkl')
+    model_충북 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%B6%A9%EB%B6%81%20XGBClassifier.pkl')
+
 
     # 원인물질별 모델 로드 및 캐시 저장
-    model_노로바이러스 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EB%85%B8%EB%A1%9C%EB%B0%94%EC%9D%B4%EB%9F%AC%EC%8A%A4_GradientBoostingClassifier.pkl')
-    model_병원성대장균 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EB%B3%91%EC%9B%90%EC%84%B1%EB%8C%80%EC%9E%A5%EA%B7%A0_LGBMClassifier.pkl')
-    model_살모넬라 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%82%B4%EB%AA%A8%EB%84%AC%EB%9D%BC_RandomForestClassifier.pkl')
-    model_장염비브리오 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%9E%A5%EC%97%BC%EB%B9%84%EB%B8%8C%EB%A6%AC%EC%98%A4_GradientBoostingClassifier.pkl')
-    model_포도상구균 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%ED%99%A9%EC%83%89%ED%8F%AC%EB%8F%84%EC%83%81%EA%B5%AC%EA%B7%A0_RandomForestClassifier.pkl')
-    model_캠필로박터제주니 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%BA%A0%ED%95%84%EB%A1%9C%EB%B0%95%ED%84%B0%EC%A0%9C%EC%A3%BC%EB%8B%88_GradientBoostingClassifier.pkl')
-    model_클로스트리디움퍼프린젠스 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%ED%81%B4%EB%A1%9C%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%94%94%EC%9B%80%ED%8D%BC%ED%94%84%EB%A6%B0%EC%A0%A0%EC%8A%A4_RandomForestClassifier.pkl')
-    model_바실러스세레우스 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EB%B0%94%EC%8B%A4%EB%9F%AC%EC%8A%A4%EC%84%B8%EB%A0%88%EC%9A%B0%EC%8A%A4_GradientBoostingClassifier.pkl')
-    model_원충 = loading_model('https://raw.githubusercontent.com/Kangsungmin00/foodpoision/main/data/%EC%9B%90%EC%B6%A9_RandomForestClassifier.pkl')
+    model_노로바이러스 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EB%85%B8%EB%A1%9C%EB%B0%94%EC%9D%B4%EB%9F%AC%EC%8A%A4_GradientBoostingClassifier.pkl')
+    model_병원성대장균 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EB%B3%91%EC%9B%90%EC%84%B1%EB%8C%80%EC%9E%A5%EA%B7%A0_LGBMClassifier.pkl')
+    model_살모넬라 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%82%B4%EB%AA%A8%EB%84%AC%EB%9D%BC_RandomForestClassifier.pkl')
+    model_장염비브리오 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data//%EC%9E%A5%EC%97%BC%EB%B9%84%EB%B8%8C%EB%A6%AC%EC%98%A4_GradientBoostingClassifier.pkl')
+    model_포도상구균 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%ED%99%A9%EC%83%89%ED%8F%AC%EB%8F%84%EC%83%81%EA%B5%AC%EA%B7%A0_RandomForestClassifier.pkl')
+    model_캠필로박터제주니 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%BA%A0%ED%95%84%EB%A1%9C%EB%B0%95%ED%84%B0%EC%A0%9C%EC%A3%BC%EB%8B%88_GradientBoostingClassifier.pkl')
+    model_클로스트리디움퍼프린젠스 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%ED%81%B4%EB%A1%9C%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%94%94%EC%9B%80%ED%8D%BC%ED%94%84%EB%A6%B0%EC%A0%A0%EC%8A%A4_RandomForestClassifier.pkl')
+    model_바실러스세레우스 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EB%B0%94%EC%8B%A4%EB%9F%AC%EC%8A%A4%EC%84%B8%EB%A0%88%EC%9A%B0%EC%8A%A4_GradientBoostingClassifier.pkl')
+    model_원충 = loading_model('https://github.com/Kangsungmin00/foodpoison/raw/cbdbc6e7ae44190fa5b71079b07073c61bb4041b/data/%EC%9B%90%EC%B6%A9_RandomForestClassifier.pkl')
+
 
     pred_노로바이러스 = predict_reason(model_노로바이러스, data_cause_2)
     pred_병원성대장균 = predict_reason(model_병원성대장균, data_cause_2)
